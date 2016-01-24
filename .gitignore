@@ -1,12 +1,11 @@
 # yii console command
-#/yii
-#/frontend/runtime
-#/frontend/web/assets
-#/frontend/web/images/pages
-#/frontend/web/images/news
-#/backend/runtime
-#/backend/web/assets
-#/console/runtime
+/yii
+/frontend/runtime
+/frontend/web/assets
+/frontend/web/images/pages
+/backend/runtime
+/backend/web/assets
+/console/runtime
 #/frontend/web/js/bootstrap-editable.min.js
 
 # phpstorm project files
@@ -17,8 +16,8 @@
 Thumbs.db
 
 # composer vendor dir
-#/vendor
-#/update.php
+/vendor
+/update.php
 
 # composer itself is not needed
 #composer.phar

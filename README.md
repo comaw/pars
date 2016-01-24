@@ -1,2 +1,2 @@
-# cms
-CMS for a basic set of features
+# Pars
+Parsing websites on topics for further imports in sites
