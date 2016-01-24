@@ -2,6 +2,7 @@
 namespace frontend\controllers;
 
 use app\models\LoginError;
+use app\models\ParsSettings;
 use Yii;
 use common\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
@@ -9,6 +10,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use yii\base\InvalidParamException;
+use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -27,7 +29,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'signup', 'index'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -35,7 +37,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -73,9 +75,23 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = new ParsSettings();
+        if($model->load(Yii::$app->request->post())){
+            $model->created = date("Y-m-d H:i:s", (time() + 60 * ParsSettings::TIME_WAIT));
+            if($model->validate()){
+                $model->save();
+                return $this->redirect(Url::toRoute('pars/index'));
+            }
+        }
+        return $this->render('index', [
+            'model' => $model,
+        ]);
     }
 
+    public function actionInfo()
+    {
+        phpinfo();
+    }
     /**
      * Logs in a user.
      *

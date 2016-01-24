@@ -45,9 +45,9 @@ return [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname='.(($_SERVER['REMOTE_ADDR'] == '127.0.0.1')?'pars':'pars'),
-            'username' => ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')?'root':'pars',
-            'password' => ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')?'':'12pars12',
+            'dsn' => 'mysql:host=localhost;dbname='.(($_SERVER['REMOTE_ADDR'] == '127.0.0.1')?'pars':'yexit'),
+            'username' => ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')?'root':'yexit',
+            'password' => ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')?'':'1yexit2',
             'charset' => 'utf8',
             'tablePrefix' => 'ps_',
         ],

@@ -11,19 +11,19 @@ class BaseController extends Controller{
 
     public function behaviors(){
         return [
-//            'access' => [
-//                'class' => AccessControl::className(),
-//                'rules' => [
-//                    [
-//                        'allow' => true,
-//                        'roles' => ['@'],
-//                    ],
-//                    [
-//                        'allow' => false,
-//                        'roles' => ['*'],
-//                    ],
-//                ],
-//            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => false,
+                        'roles' => ['*'],
+                    ],
+                ],
+            ],
         ];
     }
 

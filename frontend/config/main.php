@@ -81,9 +81,9 @@ return [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname='.(($_SERVER['REMOTE_ADDR'] == '127.0.0.1')?'pars':'pars'),
-            'username' => ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')?'root':'pars',
-            'password' => ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')?'':'12pars12',
+            'dsn' => 'mysql:host=localhost;dbname='.(($_SERVER['REMOTE_ADDR'] == '127.0.0.1')?'pars':'yexit'),
+            'username' => ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')?'root':'yexit',
+            'password' => ($_SERVER['REMOTE_ADDR'] == '127.0.0.1')?'':'1yexit2',
             'charset' => 'utf8',
             'tablePrefix' => 'ps_',
         ],
@@ -101,6 +101,9 @@ return [
                 'login' => 'site/login',
                 'site/requestpasswordreset' => 'site/requestpasswordreset',
                 'site/reset-password' => 'site/resetpassword',
+
+                'operation/pars/<pars:\d+>' => 'operation/index',
+                'operation' => 'operation/index',
 
                 '<controller:\w+>/<id:\d+>/<action:(create|update|delete)>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
