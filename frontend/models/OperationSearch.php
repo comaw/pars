@@ -45,6 +45,7 @@ class OperationSearch extends Operation
         if($pars){
             $query->andFilterWhere(['pars' => $pars]);
         }
+        $query->orderBy("id desc");
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

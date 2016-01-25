@@ -8,6 +8,7 @@
 namespace console\controllers;
 
 set_time_limit(0);
+ignore_user_abort(true);
 
 use console\models\Curl;
 use console\models\Operation;
@@ -17,10 +18,12 @@ use console\models\ParsSettings;
 use yii\console\Controller;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Console;
+use Yii;
 
 class ParsController extends Controller
 {
     public function actionIndex() {
+        Curl::cookieFile(true);
         $settings = ParsSettings::find()->where("operation = 'no' AND status = 'active'", [])->orderBy("id asc")->one();
         if(!$settings){
             exit();
@@ -29,20 +32,22 @@ class ParsController extends Controller
         $settings->save();
         $parsId = $settings->id;
 //        $baseUrl = 'http://www.yelp.com/search?find_desc=dentist&find_loc=Dallas,+TX';
-        $baseUrl = 'http://www.yelp.com/search?find_desc='.urlencode($settings->search).'&find_loc=Dallas,+TX';
+        $baseUrl = 'http://www.yelp.com/search?find_desc='.urlencode($settings->search).'';
         if($settings->city){
             $baseUrl .= '&find_loc='.urlencode($settings->city);
             if($settings->state){
-                $baseUrl .= ','.urlencode('+'.$settings->state);
+                $baseUrl .= ','.urlencode(' '.$settings->state);
             }
         }elseif($settings->state){
             $baseUrl .= '&find_loc='.urlencode($settings->state);
         }
+        $this->runInFile($baseUrl, 'txt', 'lastUrl');
         $page = Curl::get($baseUrl.'&start=0');
         $max = (int)Operation::maxResult($page);
         if($max < 1){
             exit();
         }
+        $this->runInFile($max, 'txt', 'lastMax');
         $maxPage = ceil($max / 10);
 //        $maxPage = 1000;
         $data = [];
@@ -52,7 +57,8 @@ class ParsController extends Controller
             $url = Curl::get($url);
             $page = Operation::allLinks($url);
             if(is_array($page) && sizeof($page) > 0){
-                $data = ArrayHelper::merge($data, $page);
+                $page = Operation::urlCorrect($page);
+//                $data = ArrayHelper::merge($data, $page);
                 $this->runInFileLink(join(PHP_EOL, $page), $parsId);
             }
             $time = rand(50, 200) * 10000;
@@ -92,21 +98,21 @@ class ParsController extends Controller
 
     protected function runInFile($str, $ext = 'txt', $name = null){
         $name = $name ? $name : date("Y-m-d_H_i_s");
-        file_put_contents('console/runtime/'.$name.'.'.$ext, $str);
+        file_put_contents(Yii::getAlias('@console').'/runtime/'.$name.'.'.$ext, $str);
     }
 
     protected function delInFileLink($id){
-        $name = 'console/runtime/'.$id.'_links.txt';
+        $name = Yii::getAlias('@console').'/runtime/'.$id.'_links.txt';
         @unlink($name);
     }
 
     protected function getInFileLink($id){
-        $name = 'console/runtime/'.$id.'_links.txt';
+        $name = Yii::getAlias('@console').'/runtime/'.$id.'_links.txt';
         return @file_get_contents($name);
     }
 
     protected function runInFileLink($str, $id, $new = false){
-        $name = 'console/runtime/'.$id.'_links.txt';
+        $name = Yii::getAlias('@console').'/runtime/'.$id.'_links.txt';
         $data = '';
         if(!$new){
             $data = @file_get_contents($name);

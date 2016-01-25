@@ -30,4 +30,6 @@ phpunit.phar
 # local phpunit config
 /phpunit.xml
 
+#/usr/bin/php /var/www/h1148/data/www/pars.php-shaman.pw/yii pars/index
+
 

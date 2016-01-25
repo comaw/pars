@@ -99,13 +99,21 @@ class Operation extends \yii\db\ActiveRecord
 
     public static function maxResult($page){
         preg_match("/<span class\=\"pagination\-results\-window\">(.*)<\/span>/Uis", $page, $r);
-        preg_match("/^Showing ([0-9]+)\-([0-9]+) of ([0-9]{1,})$/Uis", trim($r[1]), $r2);
+        preg_match("/^Showing ([0-9]+)\-([0-9]+) of ([0-9]{1,6})$/Uis", trim($r[1]), $r2);
         return trim($r2[3]);
     }
 
     public static function allLinks($page){
         preg_match_all("/([0-9]+)\.(\s+)<a class\=\"biz\-name\" href\=\"(.*)\"(.*)>(.*)<\/a>/Uis", $page, $r);
         return $r[3];
+    }
+
+    public static function urlCorrect($urls){
+        foreach($urls AS $k => $url){
+            $url = explode('?', $url);
+            $urls[$k] = trim($url[0]);
+        }
+        return $urls;
     }
 
     public static function gerParams($page){

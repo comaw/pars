@@ -18,7 +18,7 @@ class Curl
         return $str['scheme'].'://'.$str['host'].'/';
     }
 
-    protected static function cookieFile($new = false){
+    public static function cookieFile($new = false){
         $dir = __DIR__.'/../runtime/coockie.txt';
         if(!is_file($dir) || $new){
             file_put_contents($dir, '');

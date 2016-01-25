@@ -90,7 +90,8 @@ class SiteController extends Controller
 
     public function actionInfo()
     {
-        phpinfo();
+//        phpinfo();
+        var_dump(Yii::getAlias('@console'));
     }
     /**
      * Logs in a user.
